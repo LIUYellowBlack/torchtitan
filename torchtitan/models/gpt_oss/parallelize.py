@@ -47,7 +47,6 @@ from torchtitan.tools.logging import logger
 from .expert_parallel import GptossExpertTensorParallel, GptossTensorParallel
 
 
-
 # Adapted from llama4/infra/parallelize.py
 def parallelize_gptoss(
     model: GptOssModel,

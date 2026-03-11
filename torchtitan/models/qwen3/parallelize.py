@@ -43,7 +43,6 @@ from torchtitan.protocols.model_converter import ModelConvertersContainer
 from torchtitan.tools.logging import logger
 
 
-
 def parallelize_qwen3(
     model: Qwen3Model,
     *,

@@ -60,6 +60,7 @@ from torchtitan.models.llama4.model import Llama4Model
 from torchtitan.protocols.model_converter import ModelConvertersContainer
 from torchtitan.tools.logging import logger
 
+
 def parallelize_llama(
     model: Llama4Model,
     *,

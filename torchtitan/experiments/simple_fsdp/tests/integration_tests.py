@@ -58,6 +58,7 @@ def build_simple_fsdp_test_list() -> list[OverrideDefinitions]:
                     "--module simple_fsdp.llama3",
                     "--config simple_fsdp_llama3_debugmodel",
                     "--activation_checkpoint.mode selective",
+                    "--activation_checkpoint.selective_ac_option op",
                 ],
             ],
             "1D with selective op AC",

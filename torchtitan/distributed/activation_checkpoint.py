@@ -9,7 +9,7 @@
 
 import os
 from functools import lru_cache, partial
-from typing import Callable
+from collections.abc import Callable
 
 import torch
 import torch._functorch.config
@@ -25,6 +25,7 @@ from torchtitan.tools.logging import logger
 
 
 _PolicyFn = Callable[..., CheckpointPolicy]
+
 
 def _sac_policy_fn(
     ctx,
@@ -69,6 +70,9 @@ _COMPUTE_OPS = [
     torch.ops.aten._scaled_dot_product_cudnn_attention.default,
     torch.ops.aten._scaled_dot_product_attention_math.default,
     torch.ops.aten._scaled_dot_product_fused_attention_overrideable.default,
+    # For low precision training, always save the absolute maximum used
+    # to compute the scaling factor for quantization.
+    torch.ops.aten.max.default,
     # FlexAttention
     torch.ops.higher_order.flex_attention,
     torch._higher_order_ops.flex_attention,
@@ -264,7 +268,6 @@ def _apply_ac_to_transformer_block(
     ac_config: ACConfig,
     *,
     base_fqn: str | None = None,
-    model_compile_enabled: bool = False,
 ) -> nn.Module:
     valid_ac_modes = ("full", "selective")
     if ac_config.mode not in valid_ac_modes:
@@ -326,7 +329,6 @@ def apply_ac(
                 transformer_block,
                 ac_config,
                 base_fqn=f"layers.{layer_id}",
-                model_compile_enabled=model_compile_enabled,
             )
             layers.register_module(layer_id, transformer_block)
 
