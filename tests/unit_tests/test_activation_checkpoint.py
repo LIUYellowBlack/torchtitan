@@ -62,7 +62,6 @@ class TestApplyAC(unittest.TestCase):
         model_selective_ac = ToyModule()
         ac_config_no_force = ACConfig(
             mode="selective",
-            selective_ac_option="op",
             per_op_sac_force_recompute_mm_shapes_by_fqns=[],  # Empty list
             early_stop=False,
         )
@@ -79,7 +78,6 @@ class TestApplyAC(unittest.TestCase):
         model_with_force_first = ToyModule()
         ac_config_with_force_first = ACConfig(
             mode="selective",
-            selective_ac_option="op",
             per_op_sac_force_recompute_mm_shapes_by_fqns=["moe.router.gate"],
             early_stop=False,
         )
@@ -95,7 +93,6 @@ class TestApplyAC(unittest.TestCase):
         model_with_force_last = ToyModule()
         ac_config_with_force_last = ACConfig(
             mode="selective",
-            selective_ac_option="op",
             per_op_sac_force_recompute_mm_shapes_by_fqns=["output"],
             early_stop=False,
         )
@@ -152,7 +149,6 @@ class TestApplyAC(unittest.TestCase):
         model_selective_ac = ToyModule().cuda()
         ac_config_no_force = ACConfig(
             mode="selective",
-            selective_ac_option="op",
             per_op_sac_force_recompute_mm_shapes_by_fqns=[],  # Empty list
         )
         apply_ac(
@@ -168,7 +164,6 @@ class TestApplyAC(unittest.TestCase):
         model_with_force_first = ToyModule().cuda()
         ac_config_with_force_first = ACConfig(
             mode="selective",
-            selective_ac_option="op",
             per_op_sac_force_recompute_mm_shapes_by_fqns=["moe.router.gate"],
         )
         apply_ac(
@@ -183,7 +178,6 @@ class TestApplyAC(unittest.TestCase):
         model_with_force_last = ToyModule().cuda()
         ac_config_with_force_last = ACConfig(
             mode="selective",
-            selective_ac_option="op",
             per_op_sac_force_recompute_mm_shapes_by_fqns=["output"],
         )
         apply_ac(
@@ -225,7 +219,6 @@ class TestApplyAC(unittest.TestCase):
             model_selective_ac,
             ACConfig(
                 mode="selective",
-                selective_ac_option="op",
                 per_op_sac_force_recompute_mm_shapes_by_fqns=[],
             ),
             model_compile_enabled=False,
@@ -237,7 +230,6 @@ class TestApplyAC(unittest.TestCase):
             model_force_first,
             ACConfig(
                 mode="selective",
-                selective_ac_option="op",
                 per_op_sac_force_recompute_mm_shapes_by_fqns=["moe.router.gate"],
             ),
             model_compile_enabled=False,
@@ -250,7 +242,6 @@ class TestApplyAC(unittest.TestCase):
             model_force_last,
             ACConfig(
                 mode="selective",
-                selective_ac_option="op",
                 per_op_sac_force_recompute_mm_shapes_by_fqns=["output"],
             ),
             model_compile_enabled=False,
