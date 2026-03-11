@@ -388,6 +388,22 @@ def validate_pass_names(pass_names: list[str], joint_pass_names: list[str]) -> N
                 "specified in joint_passes. Please add --compile.joint_passes inductor_decomposition"
             )
 
+    # full_inductor_compilation returns a CompiledFxGraph (not a GraphModule),
+    # so no subsequent pass can inspect/modify the FX graph. It must be the
+    # last pass, or second-to-last if cudagraph is last.
+    if "full_inductor_compilation" in pass_names:
+        fi_idx = pass_names.index("full_inductor_compilation")
+        expected_idx = (
+            len(pass_names) - 2
+            if pass_names[-1] == "cudagraph"
+            else len(pass_names) - 1
+        )
+        if fi_idx != expected_idx:
+            raise ValueError(
+                "full_inductor_compilation must be the last pass "
+                "(or second-to-last if cudagraph is last)."
+            )
+
 
 def get_compiler_passes_from_config(
     model: torch.nn.Module,
